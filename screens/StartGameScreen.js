@@ -1,19 +1,51 @@
-import { TextInput, Pressable, StyleSheet, View } from "react-native";
+import { TextInput,Alert, Pressable, StyleSheet, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
+import { useState } from "react";
 
 function StartGameScreen() {
+
+    const [enteredNumber, setEnteredNumber] = useState('');
+
+
+    function numberInputHandler(enteredText) {
+        setEnteredNumber(enteredText);
+
+    }
+
+    function resetInputHandler(){
+        setEnteredNumber('')
+    }
+
+    function confirmInputHandler() {
+            const chosenNumber = parseInt(enteredNumber);
+
+
+            if(isNaN(chosenNumber) || chosenNumber<=0 || chosenNumber>99){
+                //!show alert
+                Alert.alert('Invalid Number !','Number has to be a Number between 1 and 99.',[{text:'Okay',style:'destructive',onPress:resetInputHandler}]
+                )
+
+                return;
+            }
+            console.log('valid number!');
+    }
+
+
     return (
         <View style={styles.container}>
             <TextInput
                 style={styles.numberInput}
                 maxLength={2}
-                keyboardType='number-pad' />
+                keyboardType='number-pad'
+                value={enteredNumber}
+                onChangeText={numberInputHandler}
+            />
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>Reset</PrimaryButton>
+                    <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>Confirm</PrimaryButton>
+                    <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
                 </View>
             </View>
         </View>
@@ -53,7 +85,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
 
     },
-    buttonContainer:{
-            flex:1,
+    buttonContainer: {
+        flex: 1,
     }
 })

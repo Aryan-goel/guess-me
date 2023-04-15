@@ -1,8 +1,11 @@
-import { TextInput,Alert, Pressable, StyleSheet, View } from "react-native";
+import { TextInput, Alert, Pressable, StyleSheet, View, Text } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { useState } from "react";
+import Title from "../components/Title";
+import Card from "../components/Card";
+import InstructionText from "../components/InstructionText";
 
-function StartGameScreen({onPickNumber}) {
+function StartGameScreen({ onPickNumber }) {
 
     const [enteredNumber, setEnteredNumber] = useState('');
 
@@ -12,43 +15,49 @@ function StartGameScreen({onPickNumber}) {
 
     }
 
-    function resetInputHandler(){
+    function resetInputHandler() {
         setEnteredNumber('')
     }
 
     function confirmInputHandler() {
-            const chosenNumber = parseInt(enteredNumber);
+        const chosenNumber = parseInt(enteredNumber);
 
 
-            if(isNaN(chosenNumber) || chosenNumber<=0 || chosenNumber>99){
-                //!show alert
-                Alert.alert('Invalid Number !','Number has to be a Number between 1 and 99.',[{text:'Okay',style:'destructive',onPress:resetInputHandler}]
-                )
+        if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+            //!show alert
+            Alert.alert('Invalid Number !', 'Number has to be a Number between 1 and 99.', [{ text: 'Okay', style: 'destructive', onPress: resetInputHandler }]
+            )
 
-                return;
-            }
-            console.log('valid number!');
-            onPickNumber(chosenNumber);
+            return;
+        }
+        console.log('valid number!');
+        onPickNumber(chosenNumber);
     }
 
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.numberInput}
-                maxLength={2}
-                keyboardType='number-pad'
-                value={enteredNumber}
-                onChangeText={numberInputHandler}
-            />
-            <View style={styles.buttonsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+        <View style={styles.rootContainer}>
+            <Title>Guess The Number</Title>
+            <Card>
+
+               <InstructionText>Enter a Number</InstructionText>
+                
+                <TextInput
+                    style={styles.numberInput}
+                    maxLength={2}
+                    keyboardType='number-pad'
+                    value={enteredNumber}
+                    onChangeText={numberInputHandler}
+                />
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+                    </View>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-                </View>
-            </View>
+            </Card >
         </View>
 
     );
@@ -56,19 +65,14 @@ function StartGameScreen({onPickNumber}) {
 }
 export default StartGameScreen;
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        // flexDirection:'row',
-        padding: 16,
-        marginHorizontal: 24,
-        borderRadius: 8,
+    rootContainer: {
+        flex: 1,
         marginTop: 100,
-        backgroundColor: '#4e0329',
-        elevation: 10,
-        shadowColor: 'white',
+        alignItems: 'center',
+
 
     },
+
     numberInput: {
         height: 50,
         width: 50,
@@ -88,5 +92,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
-    }
+    },
+
+   
 })

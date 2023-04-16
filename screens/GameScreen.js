@@ -6,6 +6,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import Card from "../components/Card";
 import InstructionText from "../components/InstructionText";
 import { Entypo } from '@expo/vector-icons'
+import GuessLogItem from "../components/game/GuessLogItem";
 
 function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -24,6 +25,7 @@ let maxBoundary = 100;
 function GameScreen({ userNumber,onGameOver }) {
     const initialGuess = generateRandomBetween(1, 100, userNumber)
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [guessRounds,setGuessRounds] = useState([initialGuess]);
 
     useEffect(()=>{
         if(currentGuess === userNumber){
@@ -31,6 +33,11 @@ function GameScreen({ userNumber,onGameOver }) {
 
         }
     },[currentGuess,userNumber ])
+
+    useEffect(()=>{
+            minBoundary=1;
+            maxBoundary=100;
+    },[])
 
     
 
@@ -47,9 +54,9 @@ function GameScreen({ userNumber,onGameOver }) {
         }
         const newRandomNumber = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
         setCurrentGuess(newRandomNumber);
+        setGuessRounds(prevGuessRounds => [newRandomNumber,...prevGuessRounds]);
 
     }
-    console.log(currentGuess);
     return (
 
         <View style={styles.screen}>
@@ -77,6 +84,11 @@ function GameScreen({ userNumber,onGameOver }) {
                 </View>
                 {/* <View>Log Rounds</View> */}
             </Card> 
+                {/* <View>
+                    
+                    {guessRounds.map(guessRound => <GuessLogItem roundNumber={}/>)}
+                
+                </View> */}
         </View>
     )
 
